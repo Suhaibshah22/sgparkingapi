@@ -4,6 +4,8 @@ import org.locationtech.jts.geom.Point;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.syedsuhaibshah.sgparkingapi.serializers.GeomSerializer;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -81,6 +83,11 @@ public class ParkingLot {
 
     public void setAvailableLots(int availableLots) {
         this.availableLots = availableLots;
+    }
+
+    @JsonSerialize(using = GeomSerializer.class)
+    public Point getLocation() {
+        return geom;
     }
 
     @Override
