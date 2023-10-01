@@ -1,0 +1,14 @@
+version: "3.8"
+services:
+  dev-db:
+    image: postgis/postgis:16-master
+    ports:
+      - 5434:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: parkinglotDB
+    networks:
+      - parking
+networks:
+  parking:
