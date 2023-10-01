@@ -3,7 +3,11 @@ package com.syedsuhaibshah.sgparkingapi.services;
 import com.syedsuhaibshah.sgparkingapi.models.ParkingLot;
 import com.syedsuhaibshah.sgparkingapi.repository.ParkingLotRepository;
 
+import net.qxcg.svy21.LatLonCoordinate;
+import net.qxcg.svy21.SVY21Coordinate;
+
 import java.util.Optional;
+import java.util.List;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -22,6 +26,21 @@ public class ParkingLotService {
     private ParkingLotRepository repository;
 
     private GeometryFactory factory = new GeometryFactory(new PrecisionModel(), 3414);
+
+    public List<ParkingLot> getnearbyParkingLots(double longitude, double latitude, int page, int pageSize) {
+
+        int limit = pageSize;
+        int offset = (page - 1) * pageSize;
+
+        LatLonCoordinate coordinatePoint = new LatLonCoordinate(latitude, longitude);
+        SVY21Coordinate result = coordinatePoint.asSVY21();
+
+        double northing = result.getNorthing();
+        double easting = result.getEasting();
+
+        Point queryPoint = factory.createPoint(new Coordinate(easting, northing));
+        return repository.getNearbyParkingLots(queryPoint, limit, offset);
+    }
 
     public boolean updateLotInfo() {
 
